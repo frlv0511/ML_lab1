@@ -350,6 +350,8 @@ def prepare_quiet():
     """Подготовка данных без вывода (для режима --only-tensors)."""
     df = read_table(config.DATASET_PATH)
     df = handle_missing(df, "mean", columns=["x2"])
+    from src.preprocess import drop_invalid
+    df = drop_invalid(df, config.NUMERIC_COLS, config.CATEGORY_VALUES, date_cols=["timestamp"])
     df = extract_columns(df, config.VARIANT_COLUMNS)
     return cast_types(df, {c: "float64" for c in config.VARIANT_COLUMNS})
 
